@@ -1,4 +1,4 @@
-export function Reward (){
+export default function Reward (){
     return <>
     Reward
     </>

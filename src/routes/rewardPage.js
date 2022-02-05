@@ -1,15 +1,15 @@
 import { useEffect } from "react";
-
-import { useContextObject } from "../context";
 import Header from "../components/Header";
+import { useContextObject } from "../context";
 import defaultArray from "../helpers/defaultArray";
 import { useNavigate } from "react-router-dom";
+import styles from "../styles/rewards.module.css"
 export default function Proposals() {
   const router = useNavigate();
   const {
-    handlePopUp,
-    setPropsObj,
-    propsObj,
+    handleMessagePopup,
+    setObjectProperties,
+    objectProperties,
     walletAddress,
     setWalletAddress,
     name,
@@ -23,35 +23,36 @@ export default function Proposals() {
   } = useContextObject();
 
   useEffect(() => {
+    if (objectProperties) {
+      localStorage.setItem("rewardsList", JSON.stringify(objectProperties));
+    }
+    console.log(objectProperties);
+  }, [objectProperties]);
+
+  useEffect(() => {
     let storage = localStorage.getItem("rewardsList");
     if (!storage) {
       localStorage.setItem("rewardsList", JSON.stringify(defaultArray));
       storage = localStorage.getItem("rewardsList");
     }
-    setPropsObj(JSON.parse(storage));
+     setObjectProperties(JSON.parse(storage));
   }, []);
-  useEffect(() => {
-    if (propsObj) {
-      localStorage.setItem("rewardsList", JSON.stringify(propsObj));
-    }
-    console.log(propsObj);
-  }, [propsObj]);
 
   const updateStorage = (_value) => {
-    const alikeArray = propsObj.filter((item) => {
+    const alikeArray = objectProperties.filter((item) => {
       const { name, wallet_Address } = _value;
       return name == item.name || wallet_Address == item.wallet_Address;
     });
     console.log("Alike array:", alikeArray);
     if (alikeArray.length === 0) {
-      setPropsObj([_value, ...propsObj]);
+      setObjectProperties([_value, ...objectProperties]);
       setTimeout(
-        () => handlePopUp(true, "Successfully Updated Reward List", false),
+        () => handleMessagePopup(true, "Successfully Updated Reward List", false),
         500
       );
     } else {
       setTimeout(
-        () => handlePopUp(true, "Unable to add Participant to Database", true),
+        () => handleMessagePopup(true, "Unable to add Participant to Database", true),
         500
       );
     }
@@ -69,7 +70,7 @@ export default function Proposals() {
 
       <section className={`pt-4  text-gray-900`}>
         <div className="mt-6 flex justify-evenly text-3xl mb-4 uppercase w-full text-center">
-          Reward Active Participants
+          Reward The Chosen
         </div>
         <form
           className="flex flex-col  m-auto space-y-4"

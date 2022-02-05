@@ -15,7 +15,7 @@ export const AppProvider = ({ children }) => {
     message: "default message",
     isError: false,
   });
-  const handlePopUp = (_open, _message, _isError) => {
+  const handleMessagePopup = (_open, _message, _isError) => {
     setMessage({ open: _open, message: _message, isError: _isError });
 
     setTimeout(() => setMessage({ ...message, open: false }), 3000);
@@ -24,7 +24,7 @@ export const AppProvider = ({ children }) => {
   return (
     <AppContext.Provider
       value={{
-        handlePopUp,
+        handleMessagePopup,
         message,
         setMessage,
         setObjectProperties, objectProperties,

@@ -36,12 +36,12 @@ const Header = () => {
           </Link>
           <Link to="/pay">
             <div onClick={() => setModalOpen(false)} className={``}>
-              reward Users
+              Reward
             </div>
           </Link>
           <Link to="/reward">
             <div onClick={() => setModalOpen(false)} className={``}>
-              Add Participants
+              Add
             </div>
           </Link>
         </div>

@@ -35,14 +35,14 @@
     position: absolute;
     width: 100vw;
     height: 90vh;;
-    background: rgba(27, 26, 27, 0.7);
-    right:-100%;
+    background: rgba(27, 26, 27, 0.9);
+    right:-104%;
     color:#ffffff;
     display: flex;
     flex-direction: column;
     padding-top: 1rem;
-    
-
+    align-items: center;
+    gap: 4rem;
 
 }
 .navButtons a{
@@ -64,7 +64,8 @@
         right: 0;
         display: flex;
         font-size: 1rem;
-        gap: .9rem;
+        gap: 2rem;
+        margin-right: 1rem;
     }
 
 }
