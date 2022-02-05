@@ -4,6 +4,7 @@ import { useContextObject } from "../context";
 import defaultArray from "../helpers/defaultArray";
 import { useNavigate } from "react-router-dom";
 import styles from "../styles/rewards.module.css"
+
 export default function Proposals() {
   const router = useNavigate();
   const {
@@ -41,13 +42,13 @@ export default function Proposals() {
   const updateStorage = (_value) => {
     const alikeArray = objectProperties.filter((item) => {
       const { name, wallet_Address } = _value;
-      return name == item.name || wallet_Address == item.wallet_Address;
+      return name == item.name && wallet_Address == item.wallet_Address;
     });
     console.log("Alike array:", alikeArray);
     if (alikeArray.length === 0) {
       setObjectProperties([_value, ...objectProperties]);
       setTimeout(
-        () => handleMessagePopup(true, "Successfully Updated Reward List", false),
+        () =>{ handleMessagePopup(true, "Successfully Updated Reward List", false)},
         500
       );
     } else {
@@ -68,41 +69,41 @@ export default function Proposals() {
     <>
       <Header />
 
-      <section className={`pt-4  text-gray-900`}>
-        <div className="mt-6 flex justify-evenly text-3xl mb-4 uppercase w-full text-center">
-          Reward The Chosen
-        </div>
+      <section className={`${styles.reward}`}>
+        <h1 className="">
+          Add to Reward List
+        </h1>
         <form
-          className="flex flex-col  m-auto space-y-4"
+          className=""
           onSubmit={handleSubmit}
         >
-          <span className="flex gap-3 justify-between">
+          <span className="">
             Full Name:
             <input
               required
               onChange={(e) => setName(e.target.value)}
               placeholder="Last-Name Middle-Name First-Name"
-              className="p-1 leading-3 outline-none border-2  border-gray-500"
+              className=""
               type="text"
             />
           </span>
-          <span className="flex gap-3 justify-between">
+          <span className="">
             Discord ID :
             <input
               required
               onChange={(e) => setDiscordID(e.target.value)}
               placeholder="DiscordName#1234"
-              className="p-1 leading-3 outline-none border-2  border-gray-500"
+              className=""
               type="text"
             />
           </span>
-          <span className="flex gap-3 justify-between">
+          <span className="">
             GitHub URL:
             <input
               required
               onChange={(e) => setGithubURL(e.target.value)}
               placeholder="https://github.com/github_username"
-              className="p-1 leading-3 outline-none border-2  border-gray-500"
+              className=""
               type="url"
             />
           </span>

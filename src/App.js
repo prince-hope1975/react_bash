@@ -22,8 +22,8 @@ function App() {
           </Link>
         </div>
       </main>
-      <Rewards />
-      <Footer />
+      {/* <Rewards />
+      <Footer /> */}
     </div>
   );
 }

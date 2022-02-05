@@ -1,14 +1,10 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import processPaymentTransaction from "../helpers/processPayments";
 import { useContextObject } from "../context";
 import Header from "../components/Header";
 import defaultArray from "../helpers/defaultArray";
+import styles from "../styles/payment.module.css"
 
-// Variables needed to connect to the algorand testnet
-
-// Take the above variables and make a connection to Algorand testnet
-// using the algosdk
 
 export default function PaymentPage() {
 
@@ -16,7 +12,7 @@ export default function PaymentPage() {
   const { setObjectProperties, objectProperties } = useContextObject();
 
 
-  const [addressArray, setAddressArray] = useState([]);
+  const [arrayOfAddress, setArrayOfAddress] = useState([]);
   const [amount, setAmount] = useState(0);
   const [tablecontent, setTablecontent] = useState([]);
   const [arr, setArr] = useState([]);
@@ -36,49 +32,50 @@ export default function PaymentPage() {
 
   const handlePayment = (e) => {
     e.preventDefault();
-    if (addressArray.length < 1) return;
+    if (arrayOfAddress.length < 1) return;
     let placeHolderArray = [];
-    let finalArr = addressArray.map((_addr) => {
+    let compiledArr = arrayOfAddress.map((_addr) => {
       return { name: "Undefined", wallet_Address: _addr, status: false };
     });
 
-    finalArr.forEach(({ wallet_Address }, index) => {
+    compiledArr.forEach(({ wallet_Address }, index) => {
       objectProperties.forEach((item) => {
         if (wallet_Address === item.wallet_Address) {
-          finalArr[index] = { ...item, status: true };
+          compiledArr[index] = { ...item, status: true };
         }
       });
     });
 
-    finalArr.forEach(async ({ wallet_Address, status }, index) => {
+    compiledArr.forEach(async ({ wallet_Address, status }, index) => {
       if (!status) {
-        placeHolderArray.unshift({ ...finalArr[index] });
-        setTablecontent([{ ...finalArr[index] }, ...tablecontent]);
+        placeHolderArray.unshift({ ...compiledArr[index] });
+        setTablecontent([{ ...compiledArr[index] }, ...tablecontent]);
       } else {
         const state = await processPaymentTransaction(wallet_Address, amount);
-        finalArr[index] = { ...finalArr[index], status: state };
-        placeHolderArray.unshift({ ...finalArr[index] });
+        compiledArr[index] = { ...compiledArr[index], status: state };
+        placeHolderArray.unshift({ ...compiledArr[index] });
 
-        setTablecontent([{ ...finalArr[index] }, ...tablecontent]);
+        setTablecontent([{ ...compiledArr[index] }, ...tablecontent]);
       }
     });
   };
 
   return (
-    <>
+    <div className={``}>
       <Header />
 
-      <section className={``}>
-        <div className="">
-          Pay Active Participants
+      <section className={`${styles.main}`}>
+        <h1 className={``}>Pay Active Participants</h1>
+        <div className={``}>
+          Copy and paste this into box below:
+          <div className={styles.address}>
+            RWXX2OACYFWOH7JKS5W6HLFDXUC6GLI6MYUJTAQ5B4VH6ZFS5LQSS6MJ2I,ILSYSYHSCMQ4KSVGQEDODDA4N6ZF4CRPQASYWJBV2T5RF2FZQQKTFB5GW4,IAWNDP5OXXP7BD7I7QUMUOF35SM3IZWUW755HHDJK2VK25D7TLJY2UZGUE
+          </div>
         </div>
-        <p className="">
-          RWXX2OACYFWOH7JKS5W6HLFDXUC6GLI6MYUJTAQ5B4VH6ZFS5LQSS6MJ2I,ILSYSYHSCMQ4KSVGQEDODDA4N6ZF4CRPQASYWJBV2T5RF2FZQQKTFB5GW4,IAWNDP5OXXP7BD7I7QUMUOF35SM3IZWUW755HHDJK2VK25D7TLJY2UZGUE
-        </p>
         <form className="">
           <textarea
             onChange={(e) =>
-              setAddressArray([...e.target.value.split(/[ ,]+/)])
+              setArrayOfAddress([...e.target.value.split(/[ ,]+/)])
             }
             className=""
             placeholder="Copy and paste a list of addresses here"
@@ -96,46 +93,23 @@ export default function PaymentPage() {
             type="submit"
             value="Pay"
             onClick={handlePayment}
-            className=""
+            className={styles.pay}
           />
         </form>
       </section>
-      <section className="">
-        <h1 className="">
-          Disbursment Status
-        </h1>
-        <div className={` `}>
-          <span className="py-3 w-full text-center border-2 border-gray-700 bg-purple-200">
-            Name{" "}
-          </span>
-          <span className="py-3 w-full text-center border-2 border-gray-700  bg-purple-200">
-            wallet Address
-          </span>
-          <span className="py-3 w-full text-center border-2 border-gray-700 bg-purple-200 ">
-            Status{" "}
-          </span>
+      <section className={styles.section}>
+        <h1 className="">Payment Status</h1>
+        <div className={`${styles.table}`}>
+          <span className="">Status </span>
+          <span className="">Name </span>
+          <span className="">wallet Address</span>
         </div>
         {arr &&
           arr.map(({ name, wallet_Address, status }) => {
             return (
-              <div
-                className={`w-full  flex items-center justify-evenly text-gray-900`}
-              >
-                <span className="border-2 border-gray-700 w-full text-center">
-                  {" "}
-                  {name}
-                </span>
-                <span className="border-2 border-gray-700 w-full text-center">
-                  {wallet_Address.substring(0, 5)}...
-                  {wallet_Address.substring(
-                    wallet_Address.length - 7,
-                    wallet_Address.length - 1
-                  )}
-                </span>
+              <div className={`${styles.tables}`}>
                 <span
-                  className={`border-2 border-gray-700 w-full text-center ${
-                    status === true ? "bg-green-500" : "bg-red-500"
-                  }`}
+                  className={` ${status === true ? styles.green : styles.red}`}
                 >
                   {" "}
                   {status
@@ -144,10 +118,18 @@ export default function PaymentPage() {
                     ? "Failure"
                     : `${status}`}
                 </span>
+                <span className=""> {name}</span>
+                <span className="">
+                  {wallet_Address.substring(0, 5)}...
+                  {wallet_Address.substring(
+                    wallet_Address.length - 7,
+                    wallet_Address.length - 1
+                  )}
+                </span>
               </div>
             );
           })}
       </section>
-    </>
+    </div>
   );
 }
