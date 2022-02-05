@@ -1,53 +1,52 @@
-import { useGlobalContext } from "./context";
+import { useContextObject } from "../context.js";
 import styles from "../styles/header.module.css";
-import { HiOutlineMenuAlt1 } from "react-icons/hi";
-import MessageProp from "./message";
+import { BiMenu } from "react-icons/bi";
+import MessageProperty from "./message";
+import {Link } from "react-router-dom"
 
 const Header = () => {
-  const { isConnected, message, setModalOpen, isModalOpen, setConnected } =
-    useGlobalContext();
+  const { message, setModalOpen, isModalOpen, } =
+    useContextObject();
 
   return (
     <header
-      className={`${styles.header} fixed flex justify-between px-8 py-5 bg-white rounded-b-sm w-full top-0 shadow-lg `}
+      className={`${styles.header}  `}
     >
       <div className={`space-x-2`}>
-        <Image className="" src={`/choice.png`} width="20" height="30" />
-        <Link href="/">
-          <a className="text-3xl text-gray-900  hover:underline hover:text-gray-700">
-            Choice Reward
-          </a>
-        </Link>
+        <img className="" src={`/choice.png`} width="20" height="30" />
+        <Link to="/">Choice</Link>
       </div>
       <div className={`${styles.buttons} `}>
         <div
-          className={`text-gray-900 text-2xl`}
+          className={``}
           onClick={() => setModalOpen(!isModalOpen)}
         >
-          <HiOutlineMenuAlt1 />
+          <div className={styles.button}>
+            <BiMenu />
+          </div>
         </div>
 
         <div
           className={`${styles.navButtons}  ${isModalOpen ? styles.open : ""} `}
         >
-          <Link href="/">
-            <a onClick={() => setModalOpen(false)} className={``}>
+          <Link to="/">
+            <div onClick={() => setModalOpen(false)} className={``}>
               Home
-            </a>
+            </div>
           </Link>
-          <Link href="/pay">
-            <a onClick={() => setModalOpen(false)} className={``}>
+          <Link to="/pay">
+            <div onClick={() => setModalOpen(false)} className={``}>
               reward Users
-            </a>
+            </div>
           </Link>
-          <Link href="/new/reward">
-            <a onClick={() => setModalOpen(false)} className={``}>
+          <Link to="/reward">
+            <div onClick={() => setModalOpen(false)} className={``}>
               Add Participants
-            </a>
+            </div>
           </Link>
         </div>
       </div>
-      {message.open === true && <MessageProp />}
+      {message.open === true && <MessageProperty />}
     </header>
   );
 };
