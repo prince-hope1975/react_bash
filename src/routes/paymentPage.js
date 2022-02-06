@@ -20,7 +20,7 @@ export default function PaymentPage() {
 
   useEffect(() => {
     let storage = localStorage.getItem("rewardsList");
-    if (!storage) {
+    if (storage) {
       localStorage.setItem("rewardsList", JSON.stringify(defaultArray));
       storage = localStorage.getItem("rewardsList");
     }
